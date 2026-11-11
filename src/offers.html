@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{OFFERS_TITLE}} | {{SITE_TITLE}}</title>
+<meta name="theme-color" content="#d85a30">
+<!--SEO-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --bg: #fff6f1; --card: #ffffff; --text: #2b1d18; --sub: #6b5750; --muted: #a08f88;
+    --line: #f3e4dc; --soft: #fdf0ea;
+    --blue: #d85a30; --blue-press: #b8471f; --blue-soft: #fde6dc; --blue-text: #993c1d;
+    --green: #00b37e; --green-soft: #e5f8f1;
+    --shadow: 0 2px 14px rgba(120, 50, 20, .07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161110; --card: #211a18; --text: #f6eeea; --sub: #cdbdb6; --muted: #957f77;
+      --line: #332824; --soft: #2a211e;
+      --blue: #ff8a65; --blue-press: #ff7448; --blue-soft: #3b241b; --blue-text: #ffb59a;
+      --green: #2fd39a; --green-soft: #12302a; --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    line-height: 1.6; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 48px; }
+  .disclosure { font-size: 12px; color: var(--muted); padding: 12px 0 0; line-height: 1.5; margin: 0; }
+  .back { display: inline-flex; align-items: center; gap: 4px; margin-top: 16px; color: var(--sub); font-weight: 600;
+    font-size: 15px; text-decoration: none; }
+  .back:hover { color: var(--text); }
+  .hero { padding: 20px 4px 4px; }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--blue-text);
+    background: var(--blue-soft); padding: 4px 10px; border-radius: 99px; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 7vw, 34px); line-height: 1.3; margin: 0 0 10px; font-weight: 800; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .lead { color: var(--sub); margin: 0; font-size: 16px; }
+  .card { background: var(--card); border-radius: 22px; padding: 22px; margin-top: 16px; box-shadow: var(--shadow); }
+  .tip { display: flex; gap: 12px; align-items: flex-start; background: var(--blue-soft); color: var(--blue-text);
+    border-radius: 16px; padding: 14px 16px; font-size: 15px; font-weight: 600; margin-top: 16px; }
+  .tip svg { flex: none; margin-top: 2px; }
+
+  /* 상담형(견적) 카드 */
+  .company { display: flex; flex-direction: column; gap: 14px; }
+  .company-head { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex: none;
+    font-weight: 800; font-size: 20px; color: #fff; overflow: hidden; }
+  .logo img { width: 100%; height: 100%; object-fit: cover; }
+  .name { font-size: 19px; font-weight: 800; letter-spacing: -0.03em; }
+  .desc { color: var(--sub); font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { font-size: 13px; font-weight: 600; color: var(--sub); background: var(--soft); padding: 4px 10px; border-radius: 99px; }
+  .cta { display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; font-size: 16px;
+    font-weight: 700; border-radius: 14px; padding: 15px 16px; background: var(--blue); color: #fff; transition: background .15s, transform .1s; }
+  .cta:hover { background: var(--blue-press); }
+  .cta:active { transform: scale(.98); }
+  .cta.visited { background: var(--green-soft); color: var(--green); }
+  .cta.visited::before { content: "✓"; }
+
+  /* 쇼핑형(제품) 카드 — 일러스트용 작은 목록 */
+  .grid { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+  .product { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); padding: 12px 14px;
+    display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; transition: background .15s; }
+  .product:hover { background: var(--soft); }
+  .thumb { width: 56px; height: 56px; flex: none; border-radius: 14px; background: var(--blue-soft);
+    display: grid; place-items: center; overflow: hidden; }
+  .thumb img { width: 80%; height: 80%; object-fit: contain; }
+  .thumb span { font-size: 28px; line-height: 1; }
+  .pbody { flex: 1; min-width: 0; }
+  .pname { font-size: 16px; font-weight: 700; line-height: 1.4; }
+  .pdesc { font-size: 13px; color: var(--sub); }
+  .pbtn { flex: none; font-size: 13px; font-weight: 700; color: var(--blue-text); background: var(--blue-soft);
+    padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+
+  h2 { font-size: 19px; font-weight: 800; margin: 0 0 14px; letter-spacing: -0.03em; }
+  .points { list-style: none; padding: 0; margin: 0; counter-reset: p; }
+  .points li { counter-increment: p; display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .points li:first-child { border-top: 0; padding-top: 0; }
+  .points li::before { content: counter(p); flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-soft);
+    color: var(--blue-text); font-weight: 800; font-size: 14px; display: grid; place-items: center; }
+  .points b { display: block; }
+  .points span { color: var(--sub); font-size: 14px; }
+  .more { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .more a { background: var(--soft); border-radius: 14px; padding: 14px; text-decoration: none; color: var(--text);
+    font-weight: 700; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+  .more a:hover { background: var(--line); }
+  .empty { text-align: center; color: var(--muted); padding: 36px 16px; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; margin-top: 28px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- 대가성 문구: 이 페이지에 실린 제휴 종류에 맞춰 자동으로 채워집니다 (페이지 첫머리) -->
+  <p class="disclosure" id="disclosure"></p>
+  <a class="back" href="/" id="backLink">‹ 처음으로</a>
+  <div id="page"></div>
+  <footer id="footer">업체 정보, 가격, 서비스 내용은 각 업체와 판매처의 안내를 따릅니다. 이 페이지는 정보를 모아 연결해 드릴 뿐 계약·판매 당사자가 아닙니다.</footer>
+</div>
+
+<script>
+/* ==================================================================
+   제휴 상품 설정 — 모든 제휴 링크는 여기서만 관리합니다.
+
+   주소: /offers?c=카테고리   (예: /offers?c=clean)
+
+   store 종류
+     "albarich" / "tenping"  → 상담·견적 신청형 (파란 버튼 카드)
+     "coupang"               → 쇼핑형 (제품 목록, 쿠팡 파트너스 링크)
+
+   url  : 제휴 링크. 비어 있으면 SHOW_EMPTY_LINKS 가 false 일 때 숨겨집니다.
+   img  : 일러스트 이미지 파일 경로 (예: "illust/box.svg"). 비우면 emoji 가 표시됩니다.
+   max  : 상담형 카테고리에서 최대 몇 곳을 보여줄지. 위에서부터 링크가 있는 곳만 채웁니다.
+          → 하루 한도가 찬 업체는 url 을 비우면 다음 업체가 자동으로 올라옵니다.
+   ================================================================== */
+var SHOW_EMPTY_LINKS = false;  // 빈 링크 업체 숨김
+
+var CATEGORIES = {
+
+  bag: {
+    icon:"👜", menu:"출산 가방", badge:"32~36주 준비",
+    title:"출산 가방,<br><em>36주 전에 싸 두세요</em>",
+    lead:"입원 기간 산모에게 필요한 것과 아기 퇴원 준비물이에요. 병원·조리원에서 주는 물품은 미리 확인하고 빼세요.",
+    items:[
+      // 쿠팡 파트너스 상품 링크. 가격은 자주 바뀌므로 적지 않습니다.
+      { store:"coupang", name:"산모패드", url:"https://link.coupang.com/a/iAKF19OuqG", emoji:"🩹", desc:"디펜드 맘스 안심패드 · 출산 직후 필수" },
+      { store:"coupang", name:"수유 브라", url:"https://link.coupang.com/a/iAKKFQl5Wu", emoji:"👚", desc:"미미캐츠 캡내장 · 산전·산후 겸용" },
+      { store:"coupang", name:"회음부 도넛 방석", url:"https://link.coupang.com/a/iAKGDXZURg", emoji:"⭕", desc:"프라하우스 · 앉을 때 덜 아프게" },
+      { store:"coupang", name:"손목 보호대", url:"https://link.coupang.com/a/iAKGV5rAwC", emoji:"🤲", desc:"아나파 2중 압박 · 아기 안을 때" },
+      { store:"coupang", name:"무압박 수면양말", url:"https://link.coupang.com/a/iAKHeX5Z6G", emoji:"🧦", desc:"리듬 6켤레 · 산후 몸 따뜻하게" },
+    ]
+  },
+
+  newborn: {
+    icon:"🍼", menu:"신생아 용품", badge:"24~32주 준비",
+    title:"신생아 용품은<br><em>꼭 필요한 것부터</em>",
+    lead:"처음부터 다 살 필요는 없어요. 태어나자마자 쓰는 것만 먼저 준비하고 나머지는 아기를 보며 더해 가세요.",
+    items:[
+      { store:"coupang", name:"배냇저고리", url:"https://link.coupang.com/a/iAKIaWN7lI", emoji:"👕", desc:"그린베베 양면 · 퇴원복으로도" },
+      { store:"coupang", name:"속싸개", url:"https://link.coupang.com/a/iAKItxw8zI", emoji:"🧸", desc:"오우아스튜디오 · 모로반사 방지" },
+      { store:"coupang", name:"신생아 기저귀 (NB)", url:"https://link.coupang.com/a/iAKIMjuaIu", emoji:"🍑", desc:"나비잠 매직소프트 50매" },
+      { store:"coupang", name:"아기 세탁세제", url:"https://link.coupang.com/a/iAKI4FGPyC", emoji:"🫧", desc:"네이쳐러브메레 · 미리 세탁용" },
+      { store:"coupang", name:"가제 손수건 10장", url:"https://link.coupang.com/a/iAKJnkyZDU", emoji:"🧻", desc:"오즈맘 · 많을수록 좋아요" },
+      { store:"coupang", name:"접이식 아기 욕조", url:"https://link.coupang.com/a/iAKJF4Wnh6", emoji:"🛁", desc:"톨스토이 · 보관이 편한 접이식" },
+      { store:"coupang", name:"비접촉 체온계", url:"https://link.coupang.com/a/iAKJYrtr0S", emoji:"🌡️", desc:"지안아트 적외선 · 자는 아기도" },
+    ]
+  },
+
+  feeding: {
+    icon:"🧴", menu:"수유 용품", badge:"34~38주 준비",
+    title:"수유 용품,<br><em>출산 전에 미리</em>",
+    lead:"모유든 분유든 젖병과 소독은 필요해요. 출산 직후엔 고를 여유가 없으니 미리 준비해 두세요.",
+    items:[
+      { store:"coupang", name:"젖병 2개 세트", url:"https://link.coupang.com/a/iAKKX7Moj6", emoji:"🍼", desc:"베베그로우 160ml" },
+      { store:"coupang", name:"일회용 수유패드", url:"https://link.coupang.com/a/iAKGkUbR4S", emoji:"🤍", desc:"오보기 브라형 · 조리원 준비물" },
+      { store:"coupang", name:"젖병 소독기", url:"https://link.coupang.com/a/iAKLgtnowS", emoji:"✨", desc:"나리몽 밀크박스 · 분유포트 겸용" },
+      { store:"coupang", name:"분유포트", url:"https://link.coupang.com/a/iAKLzpokvI", emoji:"🫖", desc:"보아르 아가맘마 · 보온 기능" },
+      { store:"coupang", name:"수유쿠션", url:"https://link.coupang.com/a/iAKLREoa0y", emoji:"🛋️", desc:"달숨 순면 · 손목·허리 부담 줄이기" },
+      { store:"coupang", name:"휴대용 유축기", url:"https://link.coupang.com/a/iAKMacqRMa", emoji:"🔋", desc:"시밀레 F1 · 양쪽 충전식" },
+    ]
+  },
+
+  outing: {
+    icon:"🚗", menu:"카시트·외출", badge:"28~34주 준비",
+    title:"퇴원 날부터<br><em>카시트가 필요해요</em>",
+    lead:"신생아는 뒤보기로 설치하는 카시트를 써요. 차에 미리 설치해 보고 익혀 두세요.",
+    items:[
+      { store:"coupang", name:"신생아 바구니 카시트", url:"https://link.coupang.com/a/iAKMs1LmVh", emoji:"🚗", desc:"에어보스 인펀트 · 퇴원 날부터" },
+      { store:"coupang", name:"신생아 아기띠", url:"https://link.coupang.com/a/iAKMLl8uHc", emoji:"🤱", desc:"루루루드림 올인원" },
+      { store:"coupang", name:"유모차 기저귀 정리 가방", url:"https://link.coupang.com/a/iAKM3X70jQ", emoji:"👜", desc:"러블리솜 · 유모차에 걸어 쓰기" },
+      { store:"coupang", name:"차량 햇빛가리개", url:"https://link.coupang.com/a/iAKNmEJj9o", emoji:"🕶️", desc:"꾸마망 암막 레일 · 뒷좌석 아기용" },
+    ]
+  },
+
+  rental: {
+    icon:"💧", menu:"정수기 상담", badge:"무료 상담",
+    title:"분유물 정수기,<br><em>출산 전에 알아보기</em>",
+    lead:"출산하고 나면 알아볼 여유가 없어요. 설치 날짜를 출산 전후로 맞춰 미리 상담해 보세요.",
+    tip:"월 요금, 약정 기간, 관리 주기를 함께 비교하세요.",
+    max:3,
+    items:[
+      // 아정당 파트너 (제휴 완료) — 가이드: 제목·계정명에 '아정당' 금지, 공식 혜택 외 금액 언급 금지
+      { store:"ajungdang", name:"정수기·가전 렌탈 비교 상담", url:"https://partners.ajl.to/lead/rental?partnerId=H9W07845", color:"#d85a30",
+        desc:"아정당에서 브랜드별 렌탈 조건을 한 번에 비교", tags:["무료 상담","설치 시 고객 추가 리워드 1만원"] }
+    ],
+    points:[
+      ["온수 온도","분유를 탈 때 쓰기 좋은 온수 기능이 있는지 확인하세요."],
+      ["관리 방식","방문 관리인지 자가 관리인지, 필터 교체 주기는 얼마인지 비교하세요."]
+    ]
+  }
+};
+
+/* 판매처별 버튼 문구와 대가성 문구 */
+var STORES = {
+  albarich: { label:"", lead:true },
+  tenping:  { label:"", lead:true },
+  ajungdang:{ label:"", lead:true },
+  coupang:  { label:"쿠팡", btn:"쿠팡에서 보기" }
+};
+var DISCLOSURE = {
+  ajungdang: "이 콘텐츠는 아정당 파트너스 활동의 일환으로, 링크를 통해 구매가 발생할 경우 파트너와 구매 고객 모두에게 일정 리워드가 제공됩니다.",
+  lead:    "이 페이지의 견적·상담 신청 링크는 제휴 광고 링크이며, 신청 후 상담이 이루어지면 운영자가 수수료를 받을 수 있습니다. 신청과 상담은 무료입니다.",
+  coupang: "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+};
+
+/* ---------------- 그리기 ---------------- */
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+var WD = ["일","월","화","수","목","금","토"];
+var params = new URLSearchParams(location.search);
+var key = params.get("c"), date = params.get("d");
+if (!(date && /^\d{4}-\d{2}-\d{2}$/.test(date))) date = null;
+var cat = CATEGORIES[key];
+var qs = date ? "&d=" + date : "";
+if (date) document.getElementById("backLink").href = "/?d=" + date;
+
+var VKEY = "offers-visited";
+var visited = {};
+try { visited = JSON.parse(localStorage.getItem(VKEY)) || {}; } catch (e) {}
+
+var infoIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
+
+function moreLinks() {
+  var h = "";
+  Object.keys(CATEGORIES).forEach(function (k) {
+    if (k === key) return;
+    var c = CATEGORIES[k];
+    h += '<a href="/offers?c=' + k + qs + '"><span>' + c.icon + '</span>' + esc(c.menu) + '</a>';
+  });
+  return '<section class="card"><h2>다른 추천도 확인해 보세요</h2><div class="more">' + h + '</div></section>';
+}
+
+function leadCard(it) {
+  var v = visited[it.name];
+  var logo = it.img ? '<img src="' + esc(it.img) + '" alt="">' : esc(it.name.charAt(0));
+  return '<section class="card company">' +
+    '<div class="company-head"><div class="logo" style="background:' + esc(it.color || "#3182f6") + '">' + logo + '</div>' +
+    '<div><div class="name">' + esc(it.name) + '</div><div class="desc">' + esc(it.desc) + '</div></div></div>' +
+    (it.tags && it.tags.length ? '<div class="tags">' + it.tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("") + '</div>' : "") +
+    '<a class="cta' + (v ? ' visited' : '') + '" href="' + esc(it.url || "#") + '" target="_blank" rel="sponsored nofollow noopener" data-name="' + esc(it.name) + '">' +
+    (v ? '신청 페이지 다시 열기' : '무료 견적 신청하기') + '</a></section>';
+}
+
+function productCard(it) {
+  var st = STORES[it.store] || {};
+  var thumb = it.img ? '<img src="' + esc(it.img) + '" alt="" loading="lazy">' : '<span aria-hidden="true">' + (it.emoji || "🛒") + '</span>';
+  return '<a class="product" href="' + esc(it.url || "#") + '" target="_blank" rel="sponsored nofollow noopener" data-name="' + esc(it.name) + '">' +
+    '<div class="thumb">' + thumb + '</div><div class="pbody">' +
+    '<div class="pname">' + esc(it.name) + '</div>' + (it.desc ? '<div class="pdesc">' + esc(it.desc) + '</div>' : "") +
+    '</div><span class="pbtn">' + esc(st.btn || "보러 가기") + '</span></a>';
+}
+
+function renderIndex() {
+  document.title = "{{OFFERS_TITLE}} | {{SITE_TITLE}}";
+  document.getElementById("disclosure").textContent = DISCLOSURE.ajungdang + " " + DISCLOSURE.coupang;
+  var h = '<header class="hero"><span class="eyebrow">추천 모음</span><h1>{{OFFERS_TITLE}}</h1>' +
+    '<p class="lead">필요한 항목을 골라 보세요.</p></header>';
+  key = null;
+  h += moreLinks().replace("다른 추천도 확인해 보세요", "무엇이 필요하세요?");
+  document.getElementById("page").innerHTML = h;
+}
+
+function renderCategory() {
+  var items = cat.items.filter(function (it) { return it.url || SHOW_EMPTY_LINKS; });
+  var leads = items.filter(function (it) { return (STORES[it.store] || {}).lead; });
+  var shops = items.filter(function (it) { return !(STORES[it.store] || {}).lead; });
+  if (cat.max) leads = leads.slice(0, cat.max);
+
+  /* 이 페이지에 실제로 나오는 제휴 종류에 맞춰 대가성 문구 구성 */
+  var d = [];
+  if (leads.some(function (it) { return it.store === "ajungdang"; })) d.push(DISCLOSURE.ajungdang);
+  if (leads.some(function (it) { return it.store !== "ajungdang"; })) d.push(DISCLOSURE.lead);
+  if (shops.some(function (it) { return it.store === "coupang"; })) d.push(DISCLOSURE.coupang);
+  document.getElementById("disclosure").textContent = d.join(" ");
+
+  var badge = cat.badge;
+  if (date && leads.length) {
+    var a = date.split("-"), dt = new Date(+a[0], +a[1]-1, +a[2]);
+    badge = (dt.getMonth()+1) + "월 " + dt.getDate() + "일 (" + WD[dt.getDay()] + ") · " + cat.badge;
+  }
+  document.title = cat.menu + " | {{SITE_TITLE}}";
+
+  var h = '<header class="hero"><span class="eyebrow">' + esc(badge) + '</span><h1>' + cat.title + '</h1><p class="lead">' + esc(cat.lead) + '</p></header>';
+  if (cat.tip) h += '<div class="tip">' + infoIcon + '<div>' + esc(cat.tip) + '</div></div>';
+  h += leads.map(leadCard).join("");
+  if (shops.length) h += '<div class="grid">' + shops.map(productCard).join("") + '</div>';
+  if (!leads.length && !shops.length) h += '<div class="card empty">지금은 준비 중이에요.</div>';
+  if (cat.points) {
+    h += '<section class="card"><h2>꼭 확인하세요</h2><ol class="points">' +
+      cat.points.map(function (p) { return '<li><div><b>' + esc(p[0]) + '</b><span>' + esc(p[1]) + '</span></div></li>'; }).join("") + '</ol></section>';
+  }
+  h += moreLinks();
+  document.getElementById("page").innerHTML = h;
+}
+
+if (cat) renderCategory(); else renderIndex();
+
+document.getElementById("page").addEventListener("click", function (e) {
+  var a = e.target.closest("a.cta, a.product"); if (!a) return;
+  if (a.getAttribute("href") === "#") { e.preventDefault(); alert("제휴 링크가 아직 설정되지 않았어요 (" + a.dataset.name + ")"); return; }
+  if (a.classList.contains("cta")) {
+    visited[a.dataset.name] = true;
+    try { localStorage.setItem(VKEY, JSON.stringify(visited)); } catch (err) {}
+    a.classList.add("visited"); a.textContent = "신청 페이지 다시 열기";
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{SITE_TITLE}}</title>
+<meta name="theme-color" content="#d85a30">
+<!--SEO-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  /* 메인 페이지에는 제휴 링크를 넣지 않습니다. 제휴 상품은 모두 offers.html 에서 관리합니다. */
+  :root {
+    --bg: #fff6f1; --card: #ffffff; --text: #2b1d18; --sub: #6b5750; --muted: #a08f88;
+    --line: #f3e4dc; --soft: #fdf0ea; --field: #fffaf7;
+    --accent: #d85a30; --accent-press: #b8471f; --accent-soft: #fde6dc; --accent-text: #993c1d; --ring: #f6c9b6;
+    --green: #2f9e6e; --green-soft: #e3f5ec;
+    --shadow: 0 2px 14px rgba(120, 50, 20, .07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161110; --card: #211a18; --text: #f6eeea; --sub: #cdbdb6; --muted: #957f77;
+      --line: #332824; --soft: #2a211e; --field: #2a211e;
+      --accent: #ff8a65; --accent-press: #ff7448; --accent-soft: #3b241b; --accent-text: #ffb59a; --ring: #4a2d22;
+      --green: #4fd39a; --green-soft: #17302a;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    line-height: 1.6; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 48px; }
+  .hero { padding: 36px 4px 8px; }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--accent-text);
+    background: var(--accent-soft); padding: 4px 10px; border-radius: 99px; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 7vw, 34px); line-height: 1.3; margin: 0 0 10px; font-weight: 800; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lead { color: var(--sub); margin: 0; font-size: 16px; }
+  .card { background: var(--card); border-radius: 22px; padding: 22px; margin-top: 16px; box-shadow: var(--shadow); }
+  h2 { font-size: 19px; font-weight: 800; margin: 0 0 14px; letter-spacing: -0.03em; }
+  .label { display: block; font-size: 14px; font-weight: 700; color: var(--sub); margin-bottom: 8px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--soft); border-radius: 14px; padding: 4px; margin-bottom: 12px; }
+  .seg button { font: inherit; font-size: 14px; font-weight: 700; color: var(--sub); background: transparent; border: 0; border-radius: 11px; padding: 9px 4px; cursor: pointer; }
+  .seg button[aria-pressed=true] { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  input[type=date] { width: 100%; font: inherit; font-size: 17px; font-weight: 600; color: var(--text);
+    background: var(--field); border: 1.5px solid var(--line); border-radius: 14px; padding: 13px 14px; outline: none; }
+  input[type=date]:focus { border-color: var(--accent); }
+  .hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+
+  /* 주차 카드 */
+  .now[hidden], .after[hidden] { display: none; }
+  .week { display: flex; align-items: center; gap: 18px; }
+  .ring { position: relative; width: 104px; height: 104px; flex: none; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring b { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: 26px; font-weight: 800;
+    line-height: 1.1; color: var(--accent-text); letter-spacing: -0.03em; }
+  .ring b small { display: block; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .size small { font-size: 14px; color: var(--sub); font-weight: 600; }
+  .size b { display: block; font-size: clamp(21px, 6vw, 25px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.3; }
+  .size span { display: block; font-size: 14px; color: var(--accent-text); font-weight: 700; margin-top: 4px; }
+  .tri { display: grid; grid-template-columns: 13fr 14fr 13fr; gap: 4px; margin-top: 20px; }
+  .tri i { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; display: block; }
+  .tri i s { display: block; height: 100%; background: var(--accent); }
+  .tri-l { display: grid; grid-template-columns: 13fr 14fr 13fr; gap: 4px; font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+  /* 할 일 */
+  .task { display: flex; gap: 12px; align-items: flex-start; padding: 13px 0; border-top: 1px solid var(--line); }
+  .task:first-of-type { border-top: 0; padding-top: 2px; }
+  .chk { appearance: none; -webkit-appearance: none; flex: none; width: 24px; height: 24px; margin: 1px 0 0; border-radius: 50%;
+    border: 2px solid var(--ring); cursor: pointer; display: grid; place-items: center; background: var(--card); }
+  .chk:checked { background: var(--accent); border-color: var(--accent); }
+  .chk:checked::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+  .tbody { flex: 1; min-width: 0; }
+  .tt { font-weight: 700; font-size: 16px; }
+  .done .tt { color: var(--muted); text-decoration: line-through; }
+  .td { font-size: 14px; color: var(--sub); }
+  .tm { font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 2px; }
+  .tm.hot { color: var(--accent-text); }
+  .shop { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; text-decoration: none; font-size: 14px; font-weight: 700;
+    color: var(--accent-text); background: var(--accent-soft); border-radius: 12px; padding: 11px 12px; }
+  .shop::before { content: ""; width: 16px; height: 16px; background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1'/%3E%3Ccircle cx='20' cy='21' r='1'/%3E%3Cpath d='M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1'/%3E%3Ccircle cx='20' cy='21' r='1'/%3E%3Cpath d='M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .shop.talk::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E"); }
+  .phase { display: flex; justify-content: space-between; align-items: baseline; margin: 26px 0 4px; }
+  .phase:first-child { margin-top: 0; }
+  .phase h3 { font-size: 15px; margin: 0; font-weight: 800; color: var(--accent-text); }
+  .phase span { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .count { font-size: 14px; color: var(--sub); font-weight: 600; margin: -6px 0 14px; }
+  .empty { color: var(--muted); font-size: 15px; margin: 0; }
+
+  .menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .menu a { background: var(--soft); border-radius: 14px; padding: 16px 14px; text-decoration: none; color: var(--text);
+    font-weight: 700; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+  .menu a:hover { background: var(--line); }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:first-of-type { border-top: 0; }
+  .faq summary { list-style: none; cursor: pointer; font-weight: 700; padding: 16px 28px 16px 0; position: relative; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: ""; position: absolute; right: 4px; top: 50%; width: 8px; height: 8px; margin-top: -6px;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(-135deg); margin-top: -2px; }
+  .faq details p { margin: 0 0 16px; color: var(--sub); font-size: 15px; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; margin-top: 28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">{{EYEBROW}}</span>
+    <h1>{{HEADLINE_1}}<br><em>{{HEADLINE_2}}</em></h1>
+    <p class="lead">{{TAGLINE}}</p>
+  </header>
+
+  <section class="card" aria-label="날짜 입력">
+    <div class="seg" id="mode">
+      <button type="button" data-v="due">출산 예정일</button><button type="button" data-v="lmp">마지막 생리 시작일</button>
+    </div>
+    <label class="label" for="date" id="dateLabel">출산 예정일</label>
+    <input type="date" id="date">
+    <p class="hint" id="dateHint">병원에서 받은 예정일을 넣어 주세요. 입력한 내용은 이 기기에만 저장돼요.</p>
+  </section>
+
+  <section class="card now" id="now" hidden aria-live="polite">
+    <div class="week">
+      <div class="ring">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="var(--soft)" stroke-width="10"/>
+          <circle id="arc" cx="50" cy="50" r="44" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5"/>
+        </svg>
+        <b><span id="wk">-</span><small id="wkd"></small></b>
+      </div>
+      <div class="size">
+        <small>아기는 지금</small>
+        <b id="sizeName">-</b>
+        <span id="dday"></span>
+      </div>
+    </div>
+    <div class="tri"><i><s id="t1"></s></i><i><s id="t2"></s></i><i><s id="t3"></s></i></div>
+    <div class="tri-l"><span>초기 ~13주</span><span>중기 14~27주</span><span>후기 28주~</span></div>
+  </section>
+
+  <section class="card" id="thisWeek" hidden>
+    <h2 id="twTitle">이번 주 할 일</h2>
+    <div id="twList"></div>
+  </section>
+
+  <section class="card" id="all" hidden>
+    <h2>전체 일정</h2>
+    <p class="count" id="count"></p>
+    <div id="allList"></div>
+  </section>
+
+  <section class="card">
+    <h2>준비물 바로 보기</h2>
+    <div class="menu">
+      <a href="/offers?c=bag"><span>👜</span>출산 가방</a>
+      <a href="/offers?c=newborn"><span>🍼</span>신생아 용품</a>
+      <a href="/offers?c=feeding"><span>🧴</span>수유 용품</a>
+      <a href="/offers?c=outing"><span>🚗</span>카시트·외출</a>
+      <a href="/offers?c=rental"><span>💧</span>정수기 상담</a>
+    </div>
+  </section>
+
+  <section class="card faq">
+    <h2>자주 묻는 질문</h2>
+    <details><summary>임신 주수는 어떻게 계산하나요?</summary><p>임신 주수는 마지막 생리 시작일을 0주 0일로 셉니다. 출산 예정일은 그날부터 280일(40주)째 되는 날이라, 예정일만 알아도 지금 몇 주인지 거꾸로 계산할 수 있어요. 병원 초음파로 예정일이 조정됐다면 조정된 날짜를 넣어 주세요.</p></details>
+    <details><summary>출산 가방은 언제 싸야 하나요?</summary><p>보통 32~36주 사이에 싸 두고 현관 가까이 두라고 권해요. 예정일보다 일찍 진통이 올 수 있어서 36주 전에는 준비를 마치는 게 마음 편해요.</p></details>
+    <details><summary>출산하면 받을 수 있는 지원은 언제 신청하나요?</summary><p>출생신고를 할 때 첫만남이용권, 부모급여, 아동수당을 한 번에 신청할 수 있어요(행복출산 원스톱 서비스). 부모급여는 출생일을 포함해 60일 안에 신청해야 태어난 달부터 받을 수 있다고 안내되고 있어요. 금액과 자격은 해마다 바뀌니 복지로(bokjiro.go.kr)에서 꼭 확인하세요.</p></details>
+    <details><summary>산후조리원은 언제 예약하나요?</summary><p>인기 있는 곳은 일찍 마감되는 경우가 많아서 임신 중기 초반에 상담과 예약을 많이 해요. 지역과 시기에 따라 다르니 원하는 곳이 있다면 미리 문의해 보세요.</p></details>
+    <details><summary>신생아 카시트가 꼭 필요한가요?</summary><p>병원이나 조리원에서 퇴원해 차로 이동한다면 첫날부터 필요해요. 출산 전에 차에 미리 설치해 두면 퇴원 날 허둥대지 않아요.</p></details>
+  </section>
+
+  <footer>
+    본 체크리스트는 일반적인 임신·출산 일정을 정리한 참고 자료입니다. 검사 시기와 건강 관련 판단은 담당 의료진의 안내를, 지원 제도는 복지로·보건소 안내를 따라 주세요.<br>
+    일부 연결 페이지에는 제휴 링크가 포함되어 있으며, 이를 통해 운영자가 수수료를 받을 수 있습니다.
+  </footer>
+</div>
+
+<script>
+/* 주차별 아기 크기 비유 (대략적인 크기, 참고용) */
+var SIZES = { 4:"참깨 한 알", 5:"사과씨", 6:"완두콩", 7:"블루베리", 8:"라즈베리", 9:"체리", 10:"대추", 11:"무화과", 12:"라임",
+  13:"레몬", 14:"복숭아", 15:"사과", 16:"아보카도", 17:"배", 18:"고구마", 19:"망고", 20:"바나나", 21:"당근", 22:"파파야",
+  23:"자몽", 24:"옥수수", 25:"콜리플라워", 26:"양상추", 27:"브로콜리", 28:"가지", 29:"단호박", 30:"양배추", 31:"코코넛",
+  32:"무 한 개", 33:"파인애플", 34:"멜론", 35:"허니듀 멜론", 36:"로메인 한 포기", 37:"근대 한 단", 38:"대파 한 단",
+  39:"작은 수박", 40:"수박" };
+
+/* 할 일: [시작 주, 끝 주, 제목, 설명, 준비물 페이지(선택)]  — 출산 후는 41주 이후로 표기(예정일 기준) */
+var TASKS = [
+  [5, 8,  "산부인과 첫 진료", "임신 확인과 아기 심장 소리를 들어요. 임신확인서를 받아 두세요."],
+  [6, 10, "국민행복카드 신청", "임신확인서로 임신·출산 진료비 바우처를 신청해요. 지원 금액은 신청할 때 안내를 확인하세요."],
+  [8, 12, "보건소 임산부 등록", "엽산·철분제와 검사 지원은 보건소마다 달라요. 가까운 보건소에 문의해 보세요."],
+  [11, 13, "1차 기형아 선별검사", "목덜미 투명대 초음파와 혈액검사를 받는 시기예요."],
+  [12, 16, "회사에 알리고 근무 조정", "임신기 근로시간 단축, 태아 검진 시간 같은 제도를 회사와 확인해요."],
+  [15, 20, "2차 기형아 선별검사", "쿼드검사 등 2차 선별검사를 받는 시기예요."],
+  [16, 22, "산후조리원 상담·예약", "인기 있는 곳은 일찍 마감돼요. 위치, 비용, 면회 규칙을 비교해 보세요."],
+  [20, 24, "정밀 초음파", "아기 장기와 구조를 자세히 보는 검사예요."],
+  [24, 28, "임신성 당뇨 검사", "당 용액을 마시고 혈당을 재는 선별검사예요."],
+  [24, 30, "신생아 용품 1차 준비", "배냇저고리, 속싸개, 기저귀처럼 꼭 필요한 것부터 사요.", "newborn"],
+  [28, 32, "아기 옷·손수건 미리 세탁", "아기 전용 세제로 빨아서 말려 두세요.", "newborn"],
+  [28, 34, "카시트 준비", "퇴원 날부터 필요해요. 미리 차에 설치해 두세요.", "outing"],
+  [30, 34, "출산휴가·육아휴직 일정 정리", "시작일과 서류를 회사와 미리 맞춰 두세요."],
+  [32, 36, "출산 가방 싸기", "산모용품과 아기 퇴원복을 챙겨 현관 가까이 두세요.", "bag"],
+  [34, 38, "수유 용품 준비", "젖병, 소독기, 수유패드를 미리 준비해요.", "feeding"],
+  [35, 37, "GBS 검사", "B군 연쇄상구균 보유 여부를 확인하는 검사예요."],
+  [36, 40, "분유물용 정수기 알아보기", "출산 직후엔 알아볼 여유가 없어요. 미리 상담해 두면 편해요.", "rental"],
+  [37, 40, "병원 가는 길·연락처 정리", "진통이 오면 누구에게 연락하고 어떻게 갈지 정해 두세요."],
+  [40, 44, "출생신고와 지원금 함께 신청", "출생신고 때 첫만남이용권·부모급여·아동수당을 한 번에 신청할 수 있어요. 출생신고는 출생 후 1개월 안에 해요."],
+  [40, 44, "아기 건강보험 등록", "출생신고 후 부모 건강보험에 피부양자로 올려요."],
+  [40, 48, "신생아 예방접종 일정 확인", "B형간염, BCG 등 첫 접종 일정을 소아과·보건소에서 확인하세요."]
+];
+
+var KEY = "chulsan-state", S = { mode: "due", date: "", done: {} };
+try { var sv = JSON.parse(localStorage.getItem(KEY)); if (sv) { S.mode = sv.mode || "due"; S.date = sv.date || ""; S.done = sv.done || {}; } } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+var $ = function (id) { return document.getElementById(id); };
+var DAY = 864e5, WD = ["일","월","화","수","목","금","토"];
+function parse(v) { var a = v.split("-"); return new Date(+a[0], +a[1]-1, +a[2]); }
+function addDays(d, n) { var r = new Date(d); r.setDate(r.getDate() + n); return r; }
+function md(d) { return (d.getMonth()+1) + "월 " + d.getDate() + "일"; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+function taskHtml(t, i, lmp, cw) {
+  var start = addDays(lmp, t[0] * 7), end = addDays(lmp, t[1] * 7 - 1), done = !!S.done[i];
+  var when = t[0] >= 40 ? "출산 후 · " + md(start) + "부터" : t[0] + "~" + t[1] + "주 · " + md(start) + " ~ " + md(end);
+  var hot = cw >= t[0] && cw < t[1] && !done;
+  var link = "";
+  if (t[4]) link = '<a class="shop' + (t[4] === "rental" ? " talk" : "") + '" href="/offers?c=' + t[4] + '">' + (t[4] === "rental" ? "정수기 무료 상담 보기" : "추천 준비물 보기") + '</a>';
+  return '<div class="task' + (done ? " done" : "") + '"><input type="checkbox" class="chk" data-i="' + i + '"' + (done ? " checked" : "") +
+    ' aria-label="' + esc(t[2]) + ' 완료"><div class="tbody"><div class="tt">' + esc(t[2]) + '</div><div class="td">' + esc(t[3]) + '</div>' +
+    '<div class="tm' + (hot ? " hot" : "") + '">' + (hot ? "지금 할 때 · " : "") + when + '</div>' + link + '</div></div>';
+}
+
+function render() {
+  var due = null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(S.date)) due = S.mode === "due" ? parse(S.date) : addDays(parse(S.date), 280);
+  ["now", "thisWeek", "all"].forEach(function (id) { $(id).hidden = !due; });
+  if (!due) return;
+  var lmp = addDays(due, -280), today = new Date(); today.setHours(0,0,0,0);
+  var days = Math.round((today - lmp) / DAY), cw = Math.floor(days / 7), cd = days % 7, left = Math.round((due - today) / DAY);
+
+  if (days < 0) { $("wk").textContent = "-"; $("wkd").textContent = ""; $("sizeName").textContent = "날짜를 확인해 주세요"; $("dday").textContent = ""; }
+  else if (cw >= 41 || left < 0) {
+    $("wk").textContent = "축하"; $("wkd").textContent = "해요";
+    $("sizeName").textContent = "예정일이 지났어요";
+    $("dday").textContent = "출산 후 할 일을 확인하세요";
+  } else {
+    $("wk").textContent = cw + "주"; $("wkd").textContent = cd + "일";
+    $("sizeName").textContent = cw < 4 ? "아주 작은 씨앗" : SIZES[Math.min(cw, 40)] + "만 해요";
+    $("dday").textContent = left === 0 ? "오늘이 출산 예정일이에요" : "출산까지 " + left + "일 · 예정일 " + md(due) + " (" + WD[due.getDay()] + ")";
+  }
+  var pct = Math.max(0, Math.min(1, days / 280));
+  $("arc").style.strokeDashoffset = (276.5 * (1 - pct)).toFixed(1);
+  $("t1").style.width = Math.max(0, Math.min(1, days / 91)) * 100 + "%";
+  $("t2").style.width = Math.max(0, Math.min(1, (days - 91) / 98)) * 100 + "%";
+  $("t3").style.width = Math.max(0, Math.min(1, (days - 189) / 91)) * 100 + "%";
+
+  /* 이번 주 할 일: 지금 시기 + 지났는데 안 한 것(최근 4주) */
+  var now = [], over = [];
+  TASKS.forEach(function (t, i) {
+    if (S.done[i]) return;
+    if (cw >= t[0] && cw < t[1]) now.push(taskHtml(t, i, lmp, cw));
+    else if (cw >= t[1] && cw - t[1] < 4) over.push(taskHtml(t, i, lmp, cw));
+  });
+  $("twTitle").textContent = cw >= 40 ? "지금 할 일" : "이번 주 할 일 (" + cw + "주)";
+  $("twList").innerHTML = now.length || over.length ? now.join("") + over.join("") : '<p class="empty">지금 꼭 할 일은 없어요. 아래 전체 일정에서 다음 할 일을 미리 볼 수 있어요.</p>';
+
+  /* 전체 일정 */
+  var groups = [["임신 초기", 0, 14, "~13주"], ["임신 중기", 14, 28, "14~27주"], ["임신 후기", 28, 40, "28주~"], ["출산 후", 40, 99, "예정일 이후"]];
+  var h = "", doneN = 0;
+  groups.forEach(function (g) {
+    var items = TASKS.map(function (t, i) { return [t, i]; }).filter(function (x) { return x[0][0] >= g[1] && x[0][0] < g[2]; });
+    if (!items.length) return;
+    h += '<div class="phase"><h3>' + g[0] + '</h3><span>' + g[3] + '</span></div>';
+    items.forEach(function (x) { h += taskHtml(x[0], x[1], lmp, cw); });
+  });
+  TASKS.forEach(function (t, i) { if (S.done[i]) doneN++; });
+  $("allList").innerHTML = h;
+  $("count").textContent = TASKS.length + "개 중 " + doneN + "개 완료";
+}
+
+/* 입력 연결 */
+function paintMode() {
+  document.querySelectorAll("#mode button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === S.mode); });
+  $("dateLabel").textContent = S.mode === "due" ? "출산 예정일" : "마지막 생리 시작일";
+  $("dateHint").textContent = S.mode === "due" ? "병원에서 받은 예정일을 넣어 주세요. 입력한 내용은 이 기기에만 저장돼요." : "예정일은 이 날짜부터 280일 뒤로 계산해요. 입력한 내용은 이 기기에만 저장돼요.";
+}
+$("mode").addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b || b.dataset.v === S.mode) return;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(S.date)) {  /* 같은 임신을 다른 기준으로 보여 주도록 날짜를 바꿔 넣음 */
+    var d = parse(S.date), n = b.dataset.v === "due" ? addDays(d, 280) : addDays(d, -280);
+    S.date = n.getFullYear() + "-" + String(n.getMonth()+1).padStart(2,"0") + "-" + String(n.getDate()).padStart(2,"0");
+    $("date").value = S.date;
+  }
+  S.mode = b.dataset.v; paintMode(); save(); render();
+});
+$("date").value = S.date;
+$("date").addEventListener("input", function () { S.date = this.value; save(); render(); });
+document.addEventListener("change", function (e) {
+  if (!e.target.classList.contains("chk")) return;
+  var i = e.target.dataset.i;
+  if (e.target.checked) S.done[i] = 1; else delete S.done[i];
+  save(); render();
+});
+paintMode(); render();
+</script>
+</body>
+</html>
